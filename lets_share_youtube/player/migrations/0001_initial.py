@@ -9,31 +9,59 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
+    dependencies = [migrations.swappable_dependency(settings.AUTH_USER_MODEL)]
 
     operations = [
         migrations.CreateModel(
-            name='PlayList',
+            name="PlayList",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100)),
-                ('public', models.BooleanField(default=True)),
-                ('date', models.DateTimeField(auto_now_add=True)),
-                ('token', models.IntegerField(blank=True, unique=True)),
-                ('last_update', models.DateTimeField(auto_now=True)),
-                ('last_get', models.DateTimeField(auto_now=True)),
-                ('owner', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=100)),
+                ("public", models.BooleanField(default=True)),
+                ("date", models.DateTimeField(auto_now_add=True)),
+                ("token", models.IntegerField(blank=True, unique=True)),
+                ("last_update", models.DateTimeField(auto_now=True)),
+                ("last_get", models.DateTimeField(auto_now=True)),
+                (
+                    "owner",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Video',
+            name="Video",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('token', models.CharField(max_length=100)),
-                ('title', models.CharField(blank=True, max_length=100)),
-                ('playlist', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='player.PlayList')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("token", models.CharField(max_length=100)),
+                ("title", models.CharField(blank=True, max_length=100)),
+                (
+                    "playlist",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="player.PlayList",
+                    ),
+                ),
             ],
         ),
     ]

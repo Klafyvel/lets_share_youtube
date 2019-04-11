@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('player', '0002_auto_20190411_1110'),
-    ]
+    dependencies = [("player", "0002_auto_20190411_1110")]
 
     operations = [
         migrations.AlterField(
-            model_name='playlist',
-            name='token',
+            model_name="playlist",
+            name="token",
             field=models.CharField(blank=True, max_length=100, null=True, unique=True),
-        ),
+        )
     ]
