@@ -16,7 +16,7 @@ class PlayList(models.Model):
     title = models.CharField(max_length=100)
     public = models.BooleanField(default=True)
     date = models.DateTimeField(auto_now_add=True)
-    token = models.CharField(blank=True, unique=True, null=True, max_length=100)
+    token = models.CharField(blank=True, null=False, unique=True, max_length=100)
     last_update = models.DateTimeField(auto_now=True)
     last_get = models.DateTimeField(auto_now=True)
 
@@ -25,16 +25,15 @@ class PlayList(models.Model):
 
     def create_token(self):
         """Creates a token for the playlist if it hasn't been done yet."""
-        if self.token is None:
+        if not self.token:
             self.token = str(
-                int(self.date.timestamp()) << settings.RANDOM_LENGTH
+                int(timezone.now().timestamp()) << settings.RANDOM_LENGTH
                 | random.randint(0, 2 ** settings.RANDOM_LENGTH - 1)
             )
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
         self.create_token()
-        super().save(update_fields=["token"])
+        super().save(*args, **kwargs)
 
     @property
     def is_anonymous(self):

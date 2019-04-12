@@ -1,3 +1,20 @@
-from django.shortcuts import render
+from rest_framework import viewsets
 
-# Create your views here.
+from .models import PlayList, Video
+from .serializers import PlayListSerializer, VideoSerializer
+
+
+class PlayListViewSet(viewsets.ModelViewSet):
+    """API endpoint that allows PlayLists to be viewed or edited."""
+
+    queryset = PlayList.objects.all()
+    serializer_class = PlayListSerializer
+    lookup_field = "token"
+    lookup_value_regex = "[0-9]+"
+
+
+class VideoViewSet(viewsets.ModelViewSet):
+    """API endpoint that allows PlayLists to be viewed or edited."""
+
+    queryset = Video.objects.all()
+    serializer_class = VideoSerializer

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "player",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -118,3 +119,11 @@ RANDOM_LENGTH = 23
 YOUTUBE_INFO_URL = (
     "http://www.youtube.com/oembed?url=http://www.youtube.com/watch?v={}&format=json"
 )
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+    ]
+}
