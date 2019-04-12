@@ -1,4 +1,7 @@
 from rest_framework import serializers
+from rest_framework.reverse import reverse
+from rest_framework_nested.relations import NestedHyperlinkedRelatedField
+from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from .models import PlayList, Video
 
@@ -7,6 +10,13 @@ class PlayListSerializer(serializers.HyperlinkedModelSerializer):
     # video_set = serializers.HyperlinkedRelatedField(
     #    view_name="video_detail", many=True, queryset="video_set"
     # )
+    video_set = NestedHyperlinkedRelatedField(
+        view_name="video-detail",
+        lookup_url_kwarg="playlist_token",
+        read_only=True,
+        many=True,
+        parent_lookup_kwargs={"pk": "pk", "playlist_token": "playlist__token"},
+    )
 
     class Meta:
         model = PlayList
@@ -24,7 +34,8 @@ class PlayListSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {"url": {"lookup_field": "token"}}
 
 
-class VideoSerializer(serializers.ModelSerializer):
+class VideoSerializer(NestedHyperlinkedModelSerializer):
+    parent_lookup_kwargs = {"playlist_token": "playlist__token"}
     playlist = serializers.HyperlinkedRelatedField(
         view_name="playlist-detail",
         lookup_field="token",

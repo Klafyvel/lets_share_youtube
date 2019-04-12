@@ -18,3 +18,6 @@ class VideoViewSet(viewsets.ModelViewSet):
 
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
+
+    def get_queryset(self):
+        return Video.objects.filter(playlist__token=self.kwargs["playlist_token"])
