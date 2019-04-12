@@ -1,4 +1,10 @@
-from rest_framework import viewsets
+from urllib.parse import urlparse, parse_qs
+
+from django.shortcuts import get_object_or_404
+
+from rest_framework.response import Response
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
 
 from .models import PlayList, Video
 from .serializers import PlayListSerializer, VideoSerializer
@@ -21,3 +27,21 @@ class VideoViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Video.objects.filter(playlist__token=self.kwargs["playlist_token"])
+
+    @action(detail=False, methods=["post"])
+    def from_url(self, request, playlist_token):
+        p = urlparse(request.data["url"])
+        p = parse_qs(p.query)
+        playlist = get_object_or_404(PlayList, token=playlist_token)
+        try:
+            v = Video.objects.create(playlist=playlist, token=p["v"][0])
+            return Response(
+                {
+                    "status": "created",
+                    "url": self.reverse_action(
+                        "detail", kwargs={"playlist_token": playlist_token, "pk": v.pk}
+                    ),
+                }
+            )
+        except KeyError:
+            return Response({"status": "failed"}, status=status.HTTP_400_BAD_REQUEST)

@@ -7,9 +7,7 @@ from .models import PlayList, Video
 
 
 class PlayListSerializer(serializers.HyperlinkedModelSerializer):
-    # video_set = serializers.HyperlinkedRelatedField(
-    #    view_name="video_detail", many=True, queryset="video_set"
-    # )
+
     video_set = NestedHyperlinkedRelatedField(
         view_name="video-detail",
         lookup_url_kwarg="playlist_token",
