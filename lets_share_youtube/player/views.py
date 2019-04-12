@@ -10,7 +10,7 @@ class PlayListViewSet(viewsets.ModelViewSet):
     queryset = PlayList.objects.all()
     serializer_class = PlayListSerializer
     lookup_field = "token"
-    lookup_value_regex = "[0-9]+"
+    lookup_value_regex = "\w+"
 
 
 class VideoViewSet(viewsets.ModelViewSet):
