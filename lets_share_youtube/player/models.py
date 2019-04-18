@@ -20,7 +20,7 @@ class PlayList(models.Model):
     last_update = models.DateTimeField(auto_now=True)
     last_get = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"Playlist " + str(self.token)
 
     def create_token(self):
@@ -47,7 +47,7 @@ class Video(models.Model):
     token = models.CharField(max_length=100)
     title = models.CharField(blank=True, max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"Link : " + self.token + u" of " + str(self.playlist)
 
     def save(self, *args, **kwargs):

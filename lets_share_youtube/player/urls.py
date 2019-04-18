@@ -4,10 +4,10 @@ from rest_framework_nested import routers
 from . import views
 
 router = routers.SimpleRouter()
-router.register(r"playlists", views.PlayListViewSet)
+router.register(r"playlists", views.PlayListViewSet, basename="playlist")
 video_router = routers.NestedSimpleRouter(router, r"playlists", lookup="playlist")
 
-video_router.register(r"videos", views.VideoViewSet)
+video_router.register(r"videos", views.VideoViewSet, basename="video")
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

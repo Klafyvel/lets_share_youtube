@@ -1,3 +1,14 @@
 from django.contrib import admin
+from .models import PlayList, Video
 
-# Register your models here.
+
+class PlayListAdmin(admin.ModelAdmin):
+    pass
+
+
+class VideoAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(PlayList, PlayListAdmin)
+admin.site.register(Video, VideoAdmin)
