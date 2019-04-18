@@ -5,8 +5,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny
 
+from .permissions import IsOwnerOrPublic
 from .models import PlayList, Video
 from .serializers import PlayListSerializer, VideoSerializer
 
@@ -18,13 +18,13 @@ class PlayListViewSet(viewsets.ModelViewSet):
     serializer_class = PlayListSerializer
     lookup_field = "token"
     lookup_value_regex = "\w+"
-    permission_classes = [AllowAny]
+    permission_classes = [IsOwnerOrPublic]
 
     def get_queryset(self):
         user = self.request.user
         if user.is_authenticated:
-            return PlayList.objects.filter(owner=user).union(
-                PlayList.objects.filter(public=True)
+            return PlayList.objects.filter(owner=user) | PlayList.objects.filter(
+                public=True
             )
         else:
             return PlayList.objects.filter(public=True)
@@ -35,7 +35,7 @@ class VideoViewSet(viewsets.ModelViewSet):
 
     # queryset = Video.objects.all()
     serializer_class = VideoSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsOwnerOrPublic]
 
     def get_queryset(self):
         return Video.objects.filter(playlist__token=self.kwargs["playlist_token"])

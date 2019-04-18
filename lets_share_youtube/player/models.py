@@ -54,6 +54,14 @@ class Video(models.Model):
         self.update_title()
         super().save(*args, **kwargs)
 
+    @property
+    def owner(self):
+        return playlist.owner
+
+    @property
+    def public(self):
+        return self.playlist.public
+
     def update_title(self):
         """Fetch the title of the video on YouTube using its token."""
         response = requests.get(settings.YOUTUBE_INFO_URL.format(self.token))
