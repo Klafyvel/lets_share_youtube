@@ -56,7 +56,7 @@ class Video(models.Model):
 
     @property
     def owner(self):
-        return playlist.owner
+        return self.playlist.owner
 
     @property
     def public(self):
