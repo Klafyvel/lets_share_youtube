@@ -1,9 +1,17 @@
+from django.contrib.auth.models import User
+
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from .models import PlayList, Video
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ("username",)
 
 
 class PlayListSerializer(serializers.HyperlinkedModelSerializer):
@@ -28,6 +36,7 @@ class PlayListSerializer(serializers.HyperlinkedModelSerializer):
             "last_update",
             "last_get",
             "video_set",
+            "owner",
         )
         extra_kwargs = {"url": {"lookup_field": "token"}}
 
@@ -42,4 +51,4 @@ class VideoSerializer(NestedHyperlinkedModelSerializer):
 
     class Meta:
         model = Video
-        fields = ("url", "playlist", "token", "title")
+        fields = ("url", "playlist", "token", "title", "owner")

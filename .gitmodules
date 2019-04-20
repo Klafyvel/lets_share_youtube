@@ -1,0 +1,3 @@
+[submodule "front/assets/dead-simple-grid"]
+	path = front/assets/dead-simple-grid
+	url = https://github.com/mourner/dead-simple-grid.git
