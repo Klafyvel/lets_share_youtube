@@ -1,17 +1,9 @@
-from django.contrib.auth.models import User
-
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from .models import PlayList, Video
-
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ("username",)
 
 
 class PlayListSerializer(serializers.HyperlinkedModelSerializer):
@@ -22,6 +14,9 @@ class PlayListSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
         many=True,
         parent_lookup_kwargs={"pk": "pk", "playlist_token": "playlist__token"},
+    )
+    owner = serializers.HyperlinkedRelatedField(
+        view_name="user-detail", lookup_field="username", read_only=True
     )
 
     class Meta:
@@ -47,6 +42,9 @@ class VideoSerializer(NestedHyperlinkedModelSerializer):
         view_name="playlist-detail",
         lookup_field="token",
         queryset=PlayList.objects.all(),
+    )
+    owner = serializers.HyperlinkedRelatedField(
+        view_name="user-detail", lookup_field="username", read_only=True
     )
 
     class Meta:
