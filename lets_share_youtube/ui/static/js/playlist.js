@@ -43,10 +43,18 @@ var vm = new Vue({
 		notify_added: function (name) {
 			new Notification('LSY', { body: 'Successfully added ' + name + ' to ' + this.title });
 		},
+		notify_deleted: function (name) {
+			new Notification('LSY', { body: 'Successfully removed ' + name + ' from ' + this.title });
+		},
     update_playlist: function() {
       axios.get(api_url + "/playlists/" + playlist_token + '/videos')
         .then(response => {
-            this.playlist = response.data
+            this.playlist = response.data;
+						var playing_token = this.player.getVideoData().video_id;
+						var current = Math.min(this.current, this.playlist.length - 1);
+						if (playing_token != this.playlist[current].token) {
+							this.set_current(current);
+						}
           }
         )
         .catch(error => {
@@ -115,6 +123,17 @@ var vm = new Vue({
 					this.error(error);
 				});
 		},
+		delete_video: function (data) {
+			console.log('plop');
+			axios.delete(data.url)
+				.then(() => {
+					this.notify_deleted(data.title);
+					this.update_playlist();
+				})
+				.catch(error => {
+					this.error(error);
+				});
+		}
   }
 });
 

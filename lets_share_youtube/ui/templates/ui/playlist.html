@@ -29,6 +29,7 @@
       v-on:play="set_current"
       v-on:up="up_video"
       v-on:down="down_video"
+      v-on:delete="delete_video"
       ></video-card>
   </div>
 </section>
@@ -44,7 +45,7 @@ var playlist_token = {{ token }};
       <button type="button" class="pure-button" v-on:click="$emit('play', index)"><i class="fas fa-play-circle"></i></button>
       <button type="button" class="pure-button" v-on:click="$emit('down', url)"><i class="fas fa-arrow-up"></i></button>
       <button type="button" class="pure-button" v-on:click="$emit('up', url)"><i class="fas fa-arrow-down"></i></button>
-      <button type="button" class="pure-button"><i class="fas fa-trash"></i></button>
+      <button type="button" class="pure-button" v-on:click="$emit('delete', {url: url, title: title})"><i class="fas fa-trash"></i></button>
     </nav>
   </div>
   <div class="pure-u-1 pure-u-sm-1-2">
