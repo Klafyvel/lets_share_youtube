@@ -3,11 +3,12 @@ footer {
   footer p {
     text-align: center; }
 
-.pure-g > * {
+.pure-g > header, .pure-g > section, .pure-g > article {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  padding: 1em; }
+  padding-left: 1em;
+  padding-top: 1em; }
 
 body {
   background-color: white; }
@@ -17,6 +18,11 @@ header {
   border-bottom: solid 1px;
   border-bottom-color: #0c084c;
   color: #113f67; }
+  header a {
+    text-decoration: none;
+    color: #113f67; }
+  header a:visited {
+    color: #113f67; }
 
 article {
   border-radius: 0.3em;
@@ -27,18 +33,18 @@ article {
   border: 1px solid;
   border-color: #0c084c; }
 
-.playlist a {
+.card a {
   text-decoration: none;
   color: #113f67;
   font-weight: bold; }
 
-.playlist a:hover {
+.card a:hover {
   text-decoration: underline; }
 
-.playlist a:visited {
+.card a:visited {
   color: #38598b; }
 
-.playlist:hover {
+.card:hover {
   background-color: #e6e7e5;
   color: white; }
 
@@ -46,6 +52,9 @@ article {
   text-align: center; }
   .main-title h1 {
     font-size: larger; }
+
+.centered {
+  text-align: center; }
 
 @media only screen and (min-width: 30em) {
   header {

@@ -7,12 +7,13 @@ footer {
   }
 }
 
-.pure-g > * {
+.pure-g > header, .pure-g > section , .pure-g > article {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 
-  padding: 1em;
+  padding-left: 1em;
+  padding-top: 1em;
 }
 
 body {
@@ -24,6 +25,13 @@ header {
   border-bottom: solid 1px;
   border-bottom-color: $border-color;
   color: $text-color;
+  a {
+    text-decoration: none;
+    color: $text-color;
+  }
+  a:visited {
+    color: $text-color;
+  }
 }
 
 article {
@@ -36,7 +44,7 @@ article {
   border-color: $border-color;
 }
 
-.playlist{
+.card{
   a {
     text-decoration: none;
     color: $text-color;
@@ -51,7 +59,7 @@ article {
     color : #38598b;
   }
 }
-.playlist:hover {
+.card:hover {
   background-color: $secondary-color;
   color: $main-color
 }
@@ -61,6 +69,10 @@ article {
   h1 {
     font-size: larger;
   }
+}
+
+.centered {
+  text-align: center;
 }
 
 @media only screen and (min-width: 30em) {

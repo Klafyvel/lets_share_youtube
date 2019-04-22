@@ -6,4 +6,4 @@ def index(request):
 
 
 def playlist(request, token):
-    return render(request, "ui/playlist.html")
+    return render(request, "ui/playlist.html", locals())

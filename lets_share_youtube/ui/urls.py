@@ -4,5 +4,5 @@ from . import views
 app_name = "player"
 urlpatterns = [
     path("", views.index, name="index"),
-    path("playlist/<str:token>", views.playlist, name="playlist"),
+    path("p/<str:token>", views.playlist, name="playlist"),
 ]

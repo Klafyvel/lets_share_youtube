@@ -1,0 +1,52 @@
+{% extends 'ui/base.html'%}
+{% load staticfiles %}
+{% block content %}
+<section class="pure-u-1 pure-u-sm-1-2">
+  <header>
+    <h2><i class="fab fa-youtube"></i> [[ title ]]</h2>
+  </header>
+  <article>
+    <div id="player" style="max-width:100%"></div>
+  </article>
+</section>
+<section id="playlists" class="pure-u-1 pure-u-sm-1-2">
+  <header>
+    <h2><i class="fas fa-video"></i> Videos</h2>
+  </header>
+  <article>
+    <form class="pure-form" v-on:submit.prevent="add_video">
+      <input type="url" ref="url" value="" placeholder="Video URL">
+      <button type="submit" class="pure-button pure-button-primary"><i class="fas fa-plus"></i></button>
+    </form>
+  </article>
+  <video-card
+    v-for="(video, index) in playlist"
+    v-bind:title="video.title"
+    v-bind:token="video.token"
+    v-bind:index="index"
+    v-on:play="set_current"
+  ></video-card>
+</section>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+var playlist_token = {{ token }};
+</script>
+<script type="text/x-template" id="video-template">
+<article class="pure-g">
+  <div class="pure-u-1 pure-u-sm-1-2">
+    <nav class="pure-button-group" role="group">
+      <button type="button" class="pure-button" v-on:click="$emit('play', index)"><i class="fas fa-play-circle"></i></button>
+      <button type="button" class="pure-button"><i class="fas fa-arrow-up"></i></button>
+      <button type="button" class="pure-button"><i class="fas fa-arrow-down"></i></button>
+      <button type="button" class="pure-button"><i class="fas fa-trash"></i></button>
+    </nav>
+  </div>
+  <div class="pure-u-1 pure-u-sm-1-2">
+  [[ title ]]
+  </div>
+</article>
+</script>
+<script src="{% static 'js/playlist.js' %}"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+{% endblock %}

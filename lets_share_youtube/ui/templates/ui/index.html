@@ -1,7 +1,7 @@
 {% extends 'ui/base.html'%}
-
+{% load staticfiles %}
 {% block content %}
-<section class="pure-u-1 pure-u-sm-1-2 content-tile">
+<section class="pure-u-1 pure-u-sm-1-2">
   <header>
     <h2><i class="fas fa-users"></i> Let's Share YouTube !</h2>
   </header>
@@ -18,7 +18,7 @@
     </div>
   </article>
 </section>
-<section id="playlists" class="pure-u-1 pure-u-sm-1-2 content-tile">
+<section class="pure-u-1 pure-u-sm-1-2">
     <header>
       <h2><i class="fas fa-broadcast-tower"></i> Currently on air</h2>
     </header>
@@ -28,8 +28,11 @@
     <article
       v-else
       v-for="playlist in playlists"
-      class="playlist"
+      class="card"
     ><a v-bind:href="'p/' + playlist.token"><i class="fas fa-play-circle"></i> [[ playlist.title ]] <span v-if="!playlist.is_anonymous">by [[playlist.owner]]</span></a></article>
 </section>
 
+{% endblock %}
+{% block script %}
+<script src="{% static 'js/index.js' %}"></script>
 {% endblock %}
