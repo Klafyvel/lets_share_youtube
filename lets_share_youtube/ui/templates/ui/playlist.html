@@ -25,7 +25,10 @@
       v-bind:title="video.title"
       v-bind:token="video.token"
       v-bind:index="index"
+      v-bind:url="video.url"
       v-on:play="set_current"
+      v-on:up="up_video"
+      v-on:down="down_video"
       ></video-card>
   </div>
 </section>
@@ -39,8 +42,8 @@ var playlist_token = {{ token }};
   <div class="pure-u-1 pure-u-sm-1-2">
     <nav class="pure-button-group" role="group">
       <button type="button" class="pure-button" v-on:click="$emit('play', index)"><i class="fas fa-play-circle"></i></button>
-      <button type="button" class="pure-button"><i class="fas fa-arrow-up"></i></button>
-      <button type="button" class="pure-button"><i class="fas fa-arrow-down"></i></button>
+      <button type="button" class="pure-button" v-on:click="$emit('down', url)"><i class="fas fa-arrow-up"></i></button>
+      <button type="button" class="pure-button" v-on:click="$emit('up', url)"><i class="fas fa-arrow-down"></i></button>
       <button type="button" class="pure-button"><i class="fas fa-trash"></i></button>
     </nav>
   </div>

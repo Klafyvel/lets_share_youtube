@@ -1,7 +1,7 @@
 Vue.component('video-card', {
   delimiters: ['[[', ']]'],
   template: '#video-template',
-  props: ['token', 'title', 'index']
+  props: ['token', 'title', 'index', 'url']
   // data: function () {
   //   return {
   //     token: "",
@@ -100,7 +100,21 @@ var vm = new Vue({
 				.catch(error => {
 					this.error(error);
 				});
-		}
+		},
+		up_video: function (url) {
+			axios.post(url + 'up/', {})
+				.then(this.update_playlist)
+				.catch(error => {
+					this.error(error);
+				});
+		},
+		down_video: function (url) {
+			axios.post(url + 'down/', {})
+				.then(this.update_playlist)
+				.catch(error => {
+					this.error(error);
+				});
+		},
   }
 });
 

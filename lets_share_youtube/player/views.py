@@ -38,7 +38,9 @@ class VideoViewSet(viewsets.ModelViewSet):
     permission_classes = [IsOwnerOrPublic]
 
     def get_queryset(self):
-        return Video.objects.filter(playlist__token=self.kwargs["playlist_token"])
+        return Video.objects.filter(
+            playlist__token=self.kwargs["playlist_token"]
+        ).order_by("index")
 
     @action(detail=False, methods=["post"])
     def from_url(self, request, playlist_token):
@@ -57,3 +59,16 @@ class VideoViewSet(viewsets.ModelViewSet):
             )
         except KeyError:
             return Response({"status": "failed"}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=["post"])
+    def up(self, request, playlist_token, pk):
+        video = get_object_or_404(Video, pk=pk)
+        video.up_index()
+        return Response({"status": "upgraded"})
+
+    @action(detail=True, methods=["post"])
+    def down(self, request, playlist_token, pk):
+        video = get_object_or_404(Video, pk=pk)
+        print(video)
+        video.down_index()
+        return Response({"status": "downgraded"})

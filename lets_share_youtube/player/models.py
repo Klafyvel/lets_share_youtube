@@ -46,12 +46,14 @@ class Video(models.Model):
     playlist = models.ForeignKey(PlayList, on_delete=models.CASCADE)
     token = models.CharField(max_length=100)
     title = models.CharField(blank=True, max_length=100)
+    index = models.IntegerField(blank=True, default=0)
 
     def __str__(self):
         return u"Link : " + self.token + u" of " + str(self.playlist)
 
     def save(self, *args, **kwargs):
         self.update_title()
+        self.update_index()
         super().save(*args, **kwargs)
 
     @property
@@ -66,3 +68,36 @@ class Video(models.Model):
         """Fetch the title of the video on YouTube using its token."""
         response = requests.get(settings.YOUTUBE_INFO_URL.format(self.token))
         self.title = json.loads(response.content.decode("utf-8"))["title"]
+
+    def update_index(self):
+        """Find the last index in the playlist and update self.index if needed."""
+        if not self.index:
+            self.index = (
+                self.playlist.video_set.aggregate(models.Max("index"))["index__max"] + 1
+            )
+
+    def down_index(self):
+        """Replace self.index with the one of the previous video."""
+        prev = (
+            self.playlist.video_set.filter(index__lt=self.index)
+            .order_by("index")
+            .last()
+        )
+        print("prev", prev)
+        if prev is not None:
+            self.index, prev.index = prev.index, self.index
+            self.save()
+            prev.save()
+
+    def up_index(self):
+        """Replace self.index with the one of the next video."""
+        next = (
+            self.playlist.video_set.filter(index__gt=self.index)
+            .order_by("index")
+            .first()
+        )
+        print("next", next)
+        if next is not None:
+            self.index, next.index = next.index, self.index
+            self.save()
+            next.save()
