@@ -73,8 +73,9 @@ class Video(models.Model):
         """Find the last index in the playlist and update self.index if needed."""
         if not self.index:
             self.index = (
-                self.playlist.video_set.aggregate(models.Max("index"))["index__max"] + 1
-            )
+                self.playlist.video_set.aggregate(models.Max("index"))["index__max"]
+                or 0
+            ) + 1
 
     def down_index(self):
         """Replace self.index with the one of the previous video."""
@@ -83,7 +84,6 @@ class Video(models.Model):
             .order_by("index")
             .last()
         )
-        print("prev", prev)
         if prev is not None:
             self.index, prev.index = prev.index, self.index
             self.save()
@@ -96,7 +96,6 @@ class Video(models.Model):
             .order_by("index")
             .first()
         )
-        print("next", next)
         if next is not None:
             self.index, next.index = next.index, self.index
             self.save()
