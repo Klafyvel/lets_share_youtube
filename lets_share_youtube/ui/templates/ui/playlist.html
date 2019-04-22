@@ -19,13 +19,15 @@
       <button type="submit" class="pure-button pure-button-primary"><i class="fas fa-plus"></i></button>
     </form>
   </article>
-  <video-card
-    v-for="(video, index) in playlist"
-    v-bind:title="video.title"
-    v-bind:token="video.token"
-    v-bind:index="index"
-    v-on:play="set_current"
-  ></video-card>
+  <div class="video-container">
+    <video-card
+      v-for="(video, index) in playlist"
+      v-bind:title="video.title"
+      v-bind:token="video.token"
+      v-bind:index="index"
+      v-on:play="set_current"
+      ></video-card>
+  </div>
 </section>
 {% endblock %}
 {% block script %}

@@ -75,7 +75,12 @@ article {
   text-align: center;
 }
 
-@media only screen and (min-width: 30em) {
+.video-container {
+  max-height: 60vh;
+  overflow-y: scroll;
+}
+
+@media only screen and (min-width: 900px) {
   header {
     text-align: left;
   }
