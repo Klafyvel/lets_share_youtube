@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="pure-u-1 form-container">
+  <h3>Sign In</h3>
+  {% if form.errors %}
+  <p class="error-text">Your username and password didn't match. Please try again.</p>
+  {% endif %}
+
+  {% if next %}
+      {% if user.is_authenticated %}
+      <p class="error-text">Your account doesn't have access to this page. To proceed,
+      please login with an account that has access.</p>
+      {% else %}
+      <p class="error-text">Please login to see this page.</p>
+      {% endif %}
+  {% endif %}
+
+  <form class="pure-form" method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+
+      <input type="text" placeholder="{{ form.username.label }}" name="{{ form.username.html_name }}" name="{{ form.username.value }}">
+      <input type="password" placeholder="{{ form.password.label }}" name="{{ form.password.html_name }}" name="{{ form.password.value }}">
+
+      <button type="submit" value="login" class="pure-button pure-button-primary"><i class="fas fa-sign-in-alt"></i> Sign in</button>
+      <input type="hidden" name="next" value="{{ next }}">
+  </form>
+
+  {# Assumes you setup the password_reset view in your URLconf #}
+  <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+</section>
+
+{% endblock %}

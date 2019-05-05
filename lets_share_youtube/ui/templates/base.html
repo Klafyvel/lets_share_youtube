@@ -1,0 +1,93 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Let's Share Youtube !</title>
+    <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+    <link rel="stylesheet" href="{% static 'css/lsy.css' %}"/>
+  </head>
+  <body>
+    <div id="main-nav">
+      <nav class="pure-g">
+        <div class="pure-u-1 pure-u-md-1-3">
+          <a href="/" class="pure-menu-heading custom-brand"><i class="fas fa-users"></i> LSY</a>
+          <a href="#" class="main-toggle" id="toggle"><s class="bar"></s><s class="bar"></s><s class="bar"></s></a>
+        </div>
+        <div class="pure-u-1 pure-u-md-2-3">
+          <div class="pure-menu pure-menu-horizontal custom-can-transform">
+            <ul class="pure-menu-list">
+              <li class="pure-menu-item"><a href="#" @click="show_create = true" class="pure-menu-link"><i class="fas fa-plus"></i> Create Playlist</a></li>
+              <li class="pure-menu-item" v-if="!logged"><a href="#" @click="show_login = true" class="pure-menu-link"><i class="fas fa-sign-in-alt"></i> Sign In</a></li>
+              <li class="pure-menu-item" v-if="!logged"><a href="#" class="pure-menu-link"><i class="fas fa-user-plus"></i> Sign Up</a></li>
+              <li class="pure-menu-item" v-if="logged"><a href="#" @click="logout" class="pure-menu-link"><i class="fas fa-sign-out-alt"></i> Sign Out</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <modal v-if="show_msg" @close="show_msg = false">
+        <h3 slot="header">[[ msg ]]</h3>
+        <div slot="body"></div>
+      </modal>
+      <modal v-if="show_create" @close="show_create = false">
+        <h3 slot="header">Create view</h3>
+      </modal>
+      <modal v-if="show_login" @close="show_login = false">
+        <h3 slot="header">Sign In</h3>
+        <form class="pure-form" slot="body" v-on:submit.prevent="login">
+          {% csrf_token %}
+          <input type="text" placeholder="Username" ref="username">
+          <input type="password" placeholder="Password" ref="password">
+          <button type="submit" class="pure-button pure-button-primary"><i class="fas fa-sign-in-alt"></i> Sign in</button>
+        </form>
+        <div slot="footer"></div>
+      </modal>
+
+    </div>
+    <main class="pure-g" id="app">
+      {% block content %}{% endblock %}
+    </main>
+    <footer>
+      <p>LSY by Klafyvel</p>
+    </footer>
+    <!-- template for the modal component -->
+    <script type="text/x-template" id="modal-template">
+      <transition name="modal">
+        <div class="modal-mask" @click="$emit('close')">
+          <div class="modal-wrapper">
+            <div class="modal-container" @click.stop="">
+
+              <div class="modal-header">
+                <slot name="header">
+                  default header
+                </slot>
+              </div>
+
+              <div class="modal-body">
+                <slot name="body">
+                  default body
+                </slot>
+              </div>
+
+              <div class="modal-footer">
+                <slot name="footer">
+                  <button class="pure-button pure-button-primary" @click="$emit('close')">
+                    OK
+                  </button>
+                </slot>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </script>
+    <script src="{% static 'js/lsy.js' %}"></script>
+    {% block script %}{% endblock %}
+  </body>
+</html>

@@ -1,4 +1,4 @@
-{% extends 'ui/base.html'%}
+{% extends 'base.html'%}
 {% load staticfiles %}
 {% block content %}
 <section class="pure-u-1 pure-u-sm-1-2">
@@ -36,7 +36,7 @@
 {% endblock %}
 {% block script %}
 <script type="text/javascript">
-var playlist_token = {{ token }};
+const playlist_token = "{{ token }}";
 </script>
 <script type="text/x-template" id="video-template">
 <article class="pure-g">

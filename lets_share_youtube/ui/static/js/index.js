@@ -10,11 +10,9 @@ var vm = new Vue({
   },
   methods: {
     update_playlist: function() {
-      axios.get(api_url + "/playlists")
+      api.get(api_url + "/playlists")
         .then(response => {
-            console.log(response.data);
             this.playlists = response.data;
-            console.log(this.playlists);
           }
         )
         .catch(

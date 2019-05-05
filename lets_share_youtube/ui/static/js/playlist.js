@@ -2,12 +2,6 @@ Vue.component('video-card', {
   delimiters: ['[[', ']]'],
   template: '#video-template',
   props: ['token', 'title', 'index', 'url']
-  // data: function () {
-  //   return {
-  //     token: "",
-  //     title: ""
-  //   }
-  //}
 });
 
 var vm = new Vue({
@@ -22,7 +16,7 @@ var vm = new Vue({
   mounted: function() {
 		Notification.requestPermission();
     this.update_playlist();
-    axios.get(api_url + "/playlists/" + playlist_token)
+    api.get(api_url + "/playlists/" + playlist_token)
       .then(response => {
         this.title = response.data.title;
       })
@@ -47,13 +41,15 @@ var vm = new Vue({
 			new Notification('LSY', { body: 'Successfully removed ' + name + ' from ' + this.title });
 		},
     update_playlist: function() {
-      axios.get(api_url + "/playlists/" + playlist_token + '/videos')
+      api.get(api_url + "/playlists/" + playlist_token + '/videos')
         .then(response => {
             this.playlist = response.data;
-						var playing_token = this.player.getVideoData().video_id;
-						var current = Math.min(this.current, this.playlist.length - 1);
-						if (playing_token != this.playlist[current].token) {
-							this.set_current(current);
+						if (this.player) {
+							var playing_token = this.player.getVideoData().video_id;
+							var current = Math.min(this.current, this.playlist.length - 1);
+							if (current >= 0 && playing_token != this.playlist[current].token) {
+								this.set_current(current);
+							}
 						}
           }
         )
@@ -95,7 +91,7 @@ var vm = new Vue({
 		},
 		add_video: function () {
 			var url = this.$refs.url.value;
-			axios.post(
+			api.post(
 				api_url + '/playlists/' + playlist_token + '/videos/from_url/',
 				{
 					url: url
@@ -110,14 +106,14 @@ var vm = new Vue({
 				});
 		},
 		up_video: function (url) {
-			axios.post(url + 'up/', {})
+			api.post(url + 'up/', {})
 				.then(this.update_playlist)
 				.catch(error => {
 					this.error(error);
 				});
 		},
 		down_video: function (url) {
-			axios.post(url + 'down/', {})
+			api.post(url + 'down/', {})
 				.then(this.update_playlist)
 				.catch(error => {
 					this.error(error);
@@ -125,7 +121,7 @@ var vm = new Vue({
 		},
 		delete_video: function (data) {
 			console.log('plop');
-			axios.delete(data.url)
+			api.delete(data.url)
 				.then(() => {
 					this.notify_deleted(data.title);
 					this.update_playlist();
