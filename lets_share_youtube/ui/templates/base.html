@@ -36,7 +36,15 @@
         <div slot="body"></div>
       </modal>
       <modal v-if="show_create" @close="show_create = false">
-        <h3 slot="header">Create view</h3>
+        <h3 slot="header">Create a playlist</h3>
+        <form class="pure-form pure-form-stacked" slot="body" v-on:submit.prevent="create">
+          <input type="text" placeholder="Title" ref="title" required>
+          <input type="text" placeholder="Default ID" ref="id" v-model="create_id">
+          <span class="pure-form-message">The playlist will ba available at <span class="url-example">https://[[domain]]/[[ create_id || 'some_number' ]]</span></span>
+          <label for="public"><input id="public" type="checkbox" ref="public"> Public playlist</label>
+          <button type="submit" class="pure-button pure-button-primary"><i class="fas fa-plus"></i> Create</button>
+        </form>
+        <div slot="footer"></div>
       </modal>
       <modal v-if="show_login" @close="show_login = false">
         <h3 slot="header">Sign In</h3>

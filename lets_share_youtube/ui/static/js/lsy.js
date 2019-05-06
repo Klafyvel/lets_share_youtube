@@ -34,9 +34,12 @@ var lsy = new Vue({
     show_msg: false,
     msg: "",
     logged: false,
-    username: ""
+    username: "",
+    domain: "",
+    create_id: "",
   },
   mounted: function () {
+    this.domain = document.domain;
     setInterval(this.check_logged,5000);
     setInterval(this.renew_token, 50000);
     this.check_logged();
@@ -88,6 +91,21 @@ var lsy = new Vue({
         this.username = response.data.user
       }).catch(function (error) {
         this.logged = false;
+      })
+    },
+    create: function () {
+      console.log('coin');
+      api.post(
+        '/playlists/',
+        {
+          title: this.$refs.title.value,
+          token: this.$refs.id.value,
+          public: this.$refs.public.value
+        }
+      ).then((response) => {
+        window.location.href = '/p/' + response.data.token;
+      }).catch(function (error) {
+        console.log(error);
       })
     }
   }
