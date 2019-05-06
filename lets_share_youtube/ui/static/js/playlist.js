@@ -15,21 +15,19 @@ var vm = new Vue({
   },
   mounted: function() {
 		Notification.requestPermission();
-    this.update_playlist();
     api.get(api_url + "/playlists/" + playlist_token)
       .then(response => {
         this.title = response.data.title;
       })
       .catch(
         function (error) {
-          console.log(error);
+          this.error(error);
         }
       )
-    setInterval(this.update_playlist, 5000);
   },
   methods: {
 		error: function (msg) {
-			new Notification('LSY Error', { body: msg });
+			console.log(msg);
 		},
 		notify_current: function (name) {
 			new Notification('LSY now playing', { body: name });
@@ -80,9 +78,14 @@ var vm = new Vue({
       this.set_current(this.current - 1);
 		},
     on_player_ready: function (event) {
+			console.log("Ready");
+    	this.update_playlist();
+			this.current = 0;
       if(this.playlist.length > 0 && this.current < (this.playlist.length - 1)) {
             this.next();
+						console.log("Ready");
         }
+	    setInterval(this.update_playlist, 5000);
     },
 		on_player_state_change: function (event) {
 			if (event.data == YT.PlayerState.ENDED) {
