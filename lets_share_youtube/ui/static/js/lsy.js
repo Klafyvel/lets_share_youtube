@@ -62,10 +62,14 @@ var lsy = new Vue({
       )
         .then(response => {
           this.show_login = false;
-          this.username = username;
-          this.logged = true;
-          console.log(response.data);
-          this.message("Welcome back " + username + " !");
+          if(response.headers["content-type"].includes('application/json')) {
+            this.username = response.data.user;
+            this.logged = true;
+            this.message("Welcome back " + this.username + " !");
+          }
+          else {
+            this.message("Wrong username or password.");
+          }
         })
         .catch(function (error) {
           this.logged = false;
